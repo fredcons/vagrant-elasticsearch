@@ -1,0 +1,15 @@
+elasticsearch_version: "1.5.0"
+elasticsearch_group: "elasticsearch"
+elasticsearch_user: "elasticsearch"
+elasticsearch_download_url:  "https://download.elasticsearch.org/elasticsearch/elasticsearch"
+elasticsearch_apt_java_package: oracle-java8-installer
+elasticsearch_apt_repos:
+  - 'ppa:webupd8team/java'
+elasticsearch_home_dir: /usr/share/elasticsearch
+elasticsearch_plugin_dir: /usr/share/elasticsearch/plugins
+elasticsearch_plugins:
+  - { name: 'lukas-vlcek/bigdesk/2.5.0' }
+  - { name: 'mobz/elasticsearch-head' }
+
+kibana_version: 4.0.2
+kibana_log: /var/log/kibana.log
