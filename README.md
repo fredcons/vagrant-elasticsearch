@@ -7,10 +7,13 @@ A simple Vagrant VM exposing Elasticearch and Kibana, based on the precise64 Vag
 To launch the VM, use : 
 
 ```
+git clone https://github.com/fredcons/vagrant-elasticsearch
+cd vagrant-elasticsearch
+vagrant box add hashicorp/precise64
 vagrant up
 vagrant ssh
 
-# launch ES and kibana
+# launch ES and Kibana (deliberately not launched on startup, for educational reasons :) )
 sudo service elasticsearch start
 sudo service kibana start
 exit
