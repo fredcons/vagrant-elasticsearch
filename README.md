@@ -16,9 +16,9 @@ curl http://localhost:5601
 
 ## Tools
 
-[es2unix](https://github.com/elastic/es2unix) is available in the path.
-The [bigdesk](http://bigdesk.org/) and [head](http://mobz.github.io/elasticsearch-head/) plugins are installed
-VM provisioning is made with Ansible, with significant portions of code borrowed from [Traackr/ansible-elasticsearch](https://github.com/Traackr/ansible-elasticsearch)
+[es2unix](https://github.com/elastic/es2unix) is available in the path.   
+The [bigdesk](http://bigdesk.org/) and [head](http://mobz.github.io/elasticsearch-head/) plugins are installed.   
+VM provisioning is made with Ansible, with significant portions of code borrowed from [Traackr/ansible-elasticsearch](https://github.com/Traackr/ansible-elasticsearch).   
 
 ## Todo
  
