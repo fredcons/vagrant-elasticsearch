@@ -10,6 +10,7 @@ elasticsearch_plugin_dir: /usr/share/elasticsearch/plugins
 elasticsearch_plugins:
   - { name: 'lukas-vlcek/bigdesk/2.5.0' }
   - { name: 'mobz/elasticsearch-head' }
+  - { name: 'elasticsearch/marvel/latest' }
 
 kibana_version: 4.0.2
 kibana_log: /var/log/kibana.log
