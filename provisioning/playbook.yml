@@ -10,6 +10,9 @@
     - name: install tree
       apt: pkg=tree state=latest
 
+    - name: install vim
+      apt: pkg=vim state=latest
+
     - name: Update repositories
       apt_repository: repo={{ item }} state=present update_cache=yes
       with_items: elasticsearch_apt_repos
