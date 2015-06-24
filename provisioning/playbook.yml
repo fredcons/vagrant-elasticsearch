@@ -114,3 +114,11 @@
     - name: es2unix permissions
       shell : "chmod a+x /usr/bin/es"
 
+    - name: crunchbase config dir
+      file: path=/etc/crunchbase state=directory owner=root group=root mode=0777
+
+    - name: crunchbase schema file 
+      copy: src=files/mappings.json dest=/etc/crunchbase/mappings.json owner=root group=root mode=0755   
+
+    - name: crunchbase data file
+      copy: src=files/companies.bulk.json dest=/etc/crunchbase/companies.bulk.json owner=root group=root mode=0755
