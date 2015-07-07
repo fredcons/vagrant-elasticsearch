@@ -2,7 +2,7 @@
 
 A simple Vagrant VM exposing Elasticearch and Kibana, based on the precise64 Vagrant base box. 
 
-## Usage
+## Usage with the source code
 
 To launch the VM, use : 
 
@@ -24,6 +24,33 @@ curl http://localhost:9200
 curl http://localhost:5601
 ```
 
+## Usage with Atlas
+
+The resulting VM is available on Hashicorp's [Atlas platform](https://atlas.hashicorp.com/fredcons/boxes/elasticsearch-handson) (formerly Vagrant Cloud). Here are a few commands for a faster start up time (with a bigger download upfront) :
+
+```
+mkdir es-handson && cd es-handson
+cat <<EOT >> Vagrantfile
+VAGRANTFILE_API_VERSION = "2"
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "fredcons/elasticsearch-handson"
+  config.vm.network "private_network", ip: "192.168.33.10"
+  config.vm.network "forwarded_port", guest: 9200, host: 9200
+  config.vm.network "forwarded_port", guest: 5601, host: 5601
+  config.vm.provider "virtualbox" do |vb|
+    vb.customize ["modifyvm", :id, "--cpus", "2"]
+    vb.customize ["modifyvm", :id, "--memory", "2048"]
+  end
+end
+EOT
+vagrant up
+vagrant ssh
+```
+
+The elasticsearch and kibana services should be manually started as well.
+
+You may want to adjust the CPU / memory parameters.
+
 ## Tools
 
 [es2unix](https://github.com/elastic/es2unix) is available in the path.   
@@ -32,6 +59,4 @@ VM provisioning is made with Ansible, with significant portions of code borrowed
 
 ## Todo
  
-- package the VM and upload it to [Atlas](https://atlas.hashicorp.com/)
-- install [es-reindex](https://github.com/geronime/es-reindex)
-- provide indexable datasets
+- install [es-reindex](https://github.com/geronime/es-reindex) or [elasticdump](https://github.com/taskrabbit/elasticsearch-dump/)
