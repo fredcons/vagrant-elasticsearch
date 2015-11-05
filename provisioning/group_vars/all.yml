@@ -11,6 +11,7 @@ elasticsearch_plugins:
   - { name: 'lukas-vlcek/bigdesk/2.5.0' }
   - { name: 'mobz/elasticsearch-head' }
   - { name: 'elasticsearch/marvel/latest' }
+  - { name: 'org.carrot2/elasticsearch-carrot2/1.9.1' }
 
 kibana_version: 4.0.2
 kibana_log: /var/log/kibana.log
