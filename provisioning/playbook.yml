@@ -158,3 +158,15 @@
       user: name={{user}} shell=/usr/bin/zsh
       sudo: True
 
+    - name: scripts folder
+      file: path=~{{user}}/scripts state=directory owner={{user}} group={{user}} mode=0777
+
+    - name: queries folder
+      file: path=~{{user}}/scripts/queries state=directory owner={{user}} group={{user}} mode=0777
+
+    - name: clustering search script
+      copy: src=files/scripts/search_clusters.sh dest=~{{user}}/scripts/search_clusters.sh owner={{user}} group={{user}} mode=0755
+
+    - name: clustering search query
+      copy: src=files/scripts/queries/search_clusters_query.json dest=~{{user}}/scripts/queries/search_clusters_query.json owner={{user}} group={{user}} mode=0755
+

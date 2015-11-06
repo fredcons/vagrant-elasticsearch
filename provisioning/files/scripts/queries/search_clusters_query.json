@@ -1,0 +1,14 @@
+{
+  "search_request": {
+    "fields": [ "title", "body" ],
+    "query": {"match" : { "_all": "SEARCH_STRING" }},
+    "size": 1000
+  },
+  "max_hits" : 0,
+  "query_hint": "SEARCH_STRING",
+  "algorithm" : "lingo",
+  "field_mapping": {
+    "title": ["fields.title"],
+    "content": ["fields.body"]
+  }
+}
