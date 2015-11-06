@@ -57,6 +57,12 @@ You may want to adjust the CPU / memory parameters.
 The [marvel](https://www.elastic.co/products/marvel), [bigdesk](http://bigdesk.org/) and [head](http://mobz.github.io/elasticsearch-head/) plugins are installed.   
 VM provisioning is made with Ansible, with significant portions of code borrowed from [Traackr/ansible-elasticsearch](https://github.com/Traackr/ansible-elasticsearch).   
 
+## Datasets
+
+This VM comes with two datasets :
+- crunchbase : a database of startups. See /etc/crunchbase for mapping and data. Run ~/scripts/load_crunchbase.sh to generate an index on http://localhost:9200/companies_db
+- reuters : the well-knwon reuters news dataset. See /etc/reuters for mapping and data. Run ~/scripts/load_reuters.sh to generate an index on http://localhost:9200/reuters
+
 ## Todo
  
 - install [es-reindex](https://github.com/geronime/es-reindex) or [elasticdump](https://github.com/taskrabbit/elasticsearch-dump/)

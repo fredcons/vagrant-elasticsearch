@@ -115,6 +115,12 @@
     - name: es2unix permissions
       shell : "chmod a+x /usr/bin/es"
 
+    - name: scripts folder
+      file: path=~{{user}}/scripts state=directory owner={{user}} group={{user}} mode=0777
+
+    - name: queries folder
+      file: path=~{{user}}/scripts/queries state=directory owner={{user}} group={{user}} mode=0777
+
     - name: crunchbase config dir
       file: path=/etc/crunchbase state=directory owner=root group=root mode=0777
 
@@ -124,6 +130,9 @@
     - name: crunchbase data file
       copy: src=files/companies.bulk.json dest=/etc/crunchbase/companies.bulk.json owner=root group=root mode=0755
 
+    - name: crunchbase load script
+      copy: src=files/scripts/load_crunchbase.sh dest=~{{user}}/scripts/load_crunchbase.sh owner={{user}} group={{user}} mode=0755
+
     - name: reuters config dir
       file: path=/etc/reuters state=directory owner=root group=root mode=0777
 
@@ -132,6 +141,9 @@
 
     - name: reuters data file
       copy: src=files/articles.bulk.json dest=/etc/reuters/articles.bulk.json owner=root group=root mode=0755
+
+    - name: reuters load script
+      copy: src=files/scripts/load_reuters.sh dest=~{{user}}/scripts/load_reuters.sh owner={{user}} group={{user}} mode=0755
 
     - name: install zsh
       apt: pkg=zsh state=present
@@ -157,12 +169,6 @@
     - name: switch to ZSH
       user: name={{user}} shell=/usr/bin/zsh
       sudo: True
-
-    - name: scripts folder
-      file: path=~{{user}}/scripts state=directory owner={{user}} group={{user}} mode=0777
-
-    - name: queries folder
-      file: path=~{{user}}/scripts/queries state=directory owner={{user}} group={{user}} mode=0777
 
     - name: clustering search script
       copy: src=files/scripts/search_clusters.sh dest=~{{user}}/scripts/search_clusters.sh owner={{user}} group={{user}} mode=0755
