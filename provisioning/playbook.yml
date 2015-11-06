@@ -124,6 +124,15 @@
     - name: crunchbase data file
       copy: src=files/companies.bulk.json dest=/etc/crunchbase/companies.bulk.json owner=root group=root mode=0755
 
+    - name: reuters config dir
+      file: path=/etc/reuters state=directory owner=root group=root mode=0777
+
+    - name: reuters schema file
+      copy: src=files/mappings-reuters.json dest=/etc/reuters/mappings.json owner=root group=root mode=0755
+
+    - name: reuters data file
+      copy: src=files/articles.bulk.json dest=/etc/reuters/articles.bulk.json owner=root group=root mode=0755
+
     - name: install zsh
       apt: pkg=zsh state=present
 

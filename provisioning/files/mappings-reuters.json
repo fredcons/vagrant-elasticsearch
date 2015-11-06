@@ -1,0 +1,25 @@
+{
+    "settings" : {
+      "number_of_shards"   : 5,
+      "number_of_replicas" : 0,
+      "analysis" : {
+        "tokenizer" : {
+        },
+        "analyzer" : {
+        }
+      }
+    },
+    "mappings" : {
+      "articles" : {
+        "dynamic" : false,
+        "properties" : {          
+          "title" : {
+            "type" : "string"
+          },          
+          "body" : {
+            "type" : "string"
+          }
+        }
+      }
+    }
+}
