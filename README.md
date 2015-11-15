@@ -61,7 +61,7 @@ VM provisioning is made with Ansible, with significant portions of code borrowed
 
 This VM comes with two datasets :
 - crunchbase : a database of startups. See /etc/crunchbase for mapping and data. Run ~/scripts/load_crunchbase.sh to generate an index on http://localhost:9200/crunchbase
-- reuters : the well-knwon reuters news dataset. See /etc/reuters for mapping and data. Run ~/scripts/load_reuters.sh to generate an index on http://localhost:9200/reuters
+- reuters : the well-known reuters news dataset. See /etc/reuters for mapping and data. Run ~/scripts/load_reuters.sh to generate an index on http://localhost:9200/reuters
 
 ## Todo
  
