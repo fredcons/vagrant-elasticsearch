@@ -1,0 +1,18 @@
+input { 
+  file { 
+    path => "/var/log/elasticsearch/*log"
+  } 
+
+  file { 
+    path => "/var/log/kibana/kibana.*"
+  }
+
+  file {
+    path => "/var/log/logstash/logstash.*"
+  }  
+}
+
+output {
+  elasticsearch { hosts => ["localhost:9200"] }
+  #stdout { codec => rubydebug }
+}

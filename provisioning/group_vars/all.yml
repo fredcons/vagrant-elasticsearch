@@ -1,19 +1,25 @@
-elasticsearch_version: "1.7.2"
+elasticsearch_version: "2.2.0"
 elasticsearch_group: "elasticsearch"
 elasticsearch_user: "elasticsearch"
-elasticsearch_download_url:  "https://download.elasticsearch.org/elasticsearch/elasticsearch"
+elasticsearch_download_url:  "https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch"
 elasticsearch_apt_java_package: oracle-java8-installer
 elasticsearch_apt_repos:
   - 'ppa:webupd8team/java'
+  - 'deb http://packages.elastic.co/kibana/4.4/debian stable main'
+  - 'deb http://packages.elastic.co/elasticsearch/2.x/debian stable main' 
+  - 'deb http://packages.elastic.co/logstash/2.2/debian stable main'
 elasticsearch_home_dir: /usr/share/elasticsearch
 elasticsearch_plugin_dir: /usr/share/elasticsearch/plugins
 elasticsearch_plugins:
-  - { name: 'lukas-vlcek/bigdesk/2.5.0' }
   - { name: 'mobz/elasticsearch-head' }
-  - { name: 'elasticsearch/marvel/latest' }
-  - { name: 'org.carrot2/elasticsearch-carrot2/1.9.1' }
+  #- { name: 'elasticsearch/marvel/latest' }
+  #- { name: 'org.carrot2/elasticsearch-carrot2/2.1.1' }
+  - { name: 'lmenezes/elasticsearch-kopf/2.0' }
 
 kibana_version: 4.0.2
 kibana_log: /var/log/kibana.log
-
+kibana_home_dir: /opt/kibana
+kibana_plugins:
+  - { name: 'elastic/sense' }
+  - { name: 'kibana/timelion' }
 user: vagrant

@@ -2,6 +2,10 @@
 - hosts: all
   tasks:
 
+    # Install elasticsearch repository key
+    - name: Install elasticsearch repository key
+      apt_key: url=https://packages.elastic.co/GPG-KEY-elasticsearch
+
     - name: Update repositories
       apt_repository: repo={{ item }} state=present update_cache=yes
       with_items: elasticsearch_apt_repos
@@ -26,94 +30,56 @@
     - name: Install dependencies
       apt: pkg={{elasticsearch_apt_java_package}} state=present
 
-    - shell: if [ -e /usr/share/elasticsearch/lib/elasticsearch-{{ elasticsearch_version }}.jar ]; then echo yes; else echo no; fi;
-      register: elasticsearch_version_exists
-      always_run: True
-
-    # Download deb if needed
-    - name: Download Elasticsearch deb
-      get_url: url={{ elasticsearch_download_url }}/elasticsearch-{{ elasticsearch_version }}.deb dest=/tmp/elasticsearch-{{ elasticsearch_version }}.deb mode=0440
-      when: elasticsearch_version_exists.stdout == 'no'
-
-    # Uninstall previous version if applicable
-    - name: Uninstalling previous version if applicable
-      shell: dpkg --remove elasticsearch
-      when: elasticsearch_version_exists.stdout == 'no'
-
-    - file: path=/usr/share/elasticsearch state=absent
-      when: elasticsearch_version_exists.stdout == 'no'
-
-    # Install the deb
-    - name: Install Elasticsearch deb
-      shell: dpkg -i -E --force-confnew /tmp/elasticsearch-{{ elasticsearch_version }}.deb
-      when: elasticsearch_version_exists.stdout == 'no'
-  
-    - file: path=/usr/share/elasticsearch state=directory owner={{ elasticsearch_user }} group={{ elasticsearch_group }} recurse=yes 
-
     - name:  install elasticsearch
-      apt: pkg=elasticsearch state=latest
+      apt: pkg=elasticsearch=2.2.0 state=present
 
-    - name: Installing Plugins by Name
-      action: shell bin/plugin -install {{ item.name }} chdir={{ elasticsearch_home_dir }}
-      when: item.url is not defined and elasticsearch_version_exists.stdout == 'no'
+    - name: Installing ES Plugins by Name
+      action: shell bin/plugin install {{ item.name }} chdir={{ elasticsearch_home_dir }}
+      when: item.url is not defined
       with_items: elasticsearch_plugins
       ignore_errors: yes
 
-    - name: Installing Plugins by URL
-      action: shell bin/plugin -install {{ item.name }} -url {{ item.url }} chdir={{ elasticsearch_home_dir }}
-      when: item.url is defined and elasticsearch_version_exists.stdout == 'no'
+    - name: Installing ES Plugins by URL
+      action: shell bin/plugin install {{ item.name }} -url {{ item.url }} chdir={{ elasticsearch_home_dir }}
+      when: item.url is defined
       with_items: elasticsearch_plugins
       ignore_errors: yes
-
-    - file: path={{ elasticsearch_plugin_dir }}i state=directory owner={{ elasticsearch_user }} group={{ elasticsearch_group }} recurse=yes
 
     - name: Ensure Elasticsearch is not started on boot
       service: name=elasticsearch enabled=false
 
-    - shell: if [ -d "/opt/kibana-{{ kibana_version }}-linux-x64" ]; then echo yes; else echo no; fi;
-      register: kibana_version_exists
-      always_run: True
+    - name: Configure elasticsearch
+      template: src=templates/elasticsearch.yml.j2 dest=/etc/elasticsearch/elasticsearch.yml
 
-    - name: Create service account for Kibana
-      user: name=kibana
-            system=yes
-            home=/var/lib/kibana
-            shell=/bin/false
+    - name: Install logstash package
+      apt: name=logstash state=latest
 
-    - name: Touch log file if it does not exist
-      command: touch {{ kibana_log }} creates={{ kibana_log }}
+    - name: Ensure logstash is not started at boot
+      service: name=logstash enabled=false
+ 
+    - name: Configure logstash
+      template: src=templates/logstash.conf.j2 dest=/etc/logstash/conf.d/logstash.conf
 
-    - name: Set log file permissions
-      file: path={{ kibana_log }} owner=kibana group=kibana mode=0644
-
-    - name: Copy kibana archive
-      get_url: url=https://download.elastic.co/kibana/kibana/kibana-{{ kibana_version }}-linux-x64.tar.gz dest=/tmp/kibana-{{ kibana_version }}-linux-x64.tar.gz mode=0440
-      when: kibana_version_exists.stdout == 'no'
-
-    - name: Uncompress kibana archive
-      shell: "tar -xzvf kibana-{{ kibana_version }}-linux-x64.tar.gz -C /opt/"
-      when: kibana_version_exists.stdout == 'no'
-      args:
-        chdir: /tmp  
-
-    - name: Symlink kibana version
-      file: src="/opt/kibana-{{ kibana_version }}-linux-x64" dest="/opt/kibana" state="link"
-      when: kibana_version_exists.stdout == 'no'
-
-    - name: Configure Kibana service definition
-      template: src=templates/kibana.conf.j2 dest=/etc/init/kibana.conf
+    - name: Install kibana package
+      apt: name=kibana state=latest
 
     - name: Ensure kibana is not started at boot
       service: name=kibana enabled=false 
+
+    - name: Installing Kibana Plugins by Name
+      action: shell bin/kibana plugin -i {{ item.name }} chdir={{ kibana_home_dir }}
+      when: item.url is not defined
+      with_items: kibana_plugins
+      ignore_errors: yes
+
+    - name: Set kibana permissions
+      file: path={{ kibana_home_dir }} owner=kibana group=kibana mode=0755 recurse=true state=directory
 
     - name: Download jq
       get_url: url=http://stedolan.github.io/jq/download/linux64/jq dest=/usr/local/bin/jq mode=0755 
 
     - name: Install es2unix
-      shell: "curl http://download.elasticsearch.org/es2unix/es > /usr/bin/es"
-
-    - name: es2unix permissions
-      shell : "chmod a+x /usr/bin/es"
+      get_url: url=http://download.elasticsearch.org/es2unix/es dest=/usr/bin/es mode=0755
 
     - name: scripts folder
       file: path=~{{user}}/scripts state=directory owner={{user}} group={{user}} mode=0777
