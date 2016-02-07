@@ -78,6 +78,24 @@
     - name: Set kibana permissions
       file: path={{ kibana_home_dir }} owner=kibana group=kibana mode=0755 recurse=true state=directory
 
+    - name: Install topbeat package
+      apt: name=topbeat state=latest
+
+    - name: Ensure topbeat is not started at boot
+      service: name=topbeat enabled=false
+
+    - name: Install packetbeat package
+      apt: name=packetbeat state=latest
+
+    - name: Ensure packetbeat is not started at boot
+      service: name=packetbeat enabled=false
+
+    - name: Install filebeat package
+      apt: name=filebeat state=latest
+
+    - name: Ensure filebeat is not started at boot
+      service: name=filebeat enabled=false
+
     - name: Download jq
       get_url: url=http://stedolan.github.io/jq/download/linux64/jq dest=/usr/local/bin/jq mode=0755 
 
