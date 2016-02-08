@@ -25,6 +25,9 @@
     - name: install vim
       apt: pkg=vim state=latest
 
+    - name: scripts folder
+      file: path=~{{user}}/scripts state=directory owner={{user}} group={{user}} mode=0777
+
     # Accept Oracle license
     - name: Accept Oracle license prior JDK installation
       shell: echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections; echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections creates=/usr/lib/jvm/java-7-oracle
@@ -33,7 +36,7 @@
     - name: Install dependencies
       apt: pkg={{elasticsearch_apt_java_package}} state=present
 
-    - name:  install elasticsearch
+    - name:  Install elasticsearch
       apt: pkg=elasticsearch=2.2.0 state=present
 
     - name: Installing ES Plugins by Name
@@ -59,7 +62,7 @@
 
     - name: Ensure logstash is not started at boot
       service: name=logstash enabled=false
- 
+
     - name: Configure logstash
       template: src=templates/logstash.conf.j2 dest=/etc/logstash/conf.d/logstash.conf
 
@@ -67,7 +70,7 @@
       apt: name=kibana state=latest
 
     - name: Ensure kibana is not started at boot
-      service: name=kibana enabled=false 
+      service: name=kibana enabled=false
 
     - name: Installing Kibana Plugins by Name
       action: shell bin/kibana plugin -i {{ item.name }} chdir={{ kibana_home_dir }}
@@ -96,14 +99,23 @@
     - name: Ensure filebeat is not started at boot
       service: name=filebeat enabled=false
 
+    - name : Setup topbeat index
+      copy: src=files/scripts/beats/create-topbeat.sh dest=~{{user}}/scripts/create-topbeat.sh owner={{user}} group={{user}} mode=0755
+
+    - name : Setup packetbeat index
+      copy: src=files/scripts/beats/create-packetbeat.sh dest=~{{user}}/scripts/create-packetbeat.sh owner={{user}} group={{user}} mode=0755
+
+    - name : Clone beats dashboards
+      git: repo=https://github.com/elastic/beats-dashboards.git dest=/etc/beats-dashboards
+
+    - name : Setup beats dashboards
+      copy: src=files/scripts/beats/setup-dashboards.sh dest=~{{user}}/scripts/setup-dashboards.sh owner={{user}} group={{user}} mode=0755
+
     - name: Download jq
-      get_url: url=http://stedolan.github.io/jq/download/linux64/jq dest=/usr/local/bin/jq mode=0755 
+      get_url: url=http://stedolan.github.io/jq/download/linux64/jq dest=/usr/local/bin/jq mode=0755
 
     - name: Install es2unix
       get_url: url=http://download.elasticsearch.org/es2unix/es dest=/usr/bin/es mode=0755
-
-    - name: scripts folder
-      file: path=~{{user}}/scripts state=directory owner={{user}} group={{user}} mode=0777
 
     - name: queries folder
       file: path=~{{user}}/scripts/queries state=directory owner={{user}} group={{user}} mode=0777
@@ -111,8 +123,8 @@
     - name: crunchbase config dir
       file: path=/etc/crunchbase state=directory owner=root group=root mode=0777
 
-    - name: crunchbase schema file 
-      copy: src=files/mappings.json dest=/etc/crunchbase/mappings.json owner=root group=root mode=0755   
+    - name: crunchbase schema file
+      copy: src=files/mappings.json dest=/etc/crunchbase/mappings.json owner=root group=root mode=0755
 
     - name: crunchbase data file
       copy: src=files/companies.bulk.json dest=/etc/crunchbase/companies.bulk.json owner=root group=root mode=0755
@@ -162,4 +174,3 @@
 
     - name: clustering search query
       copy: src=files/scripts/queries/search_clusters_query.json dest=~{{user}}/scripts/queries/search_clusters_query.json owner={{user}} group={{user}} mode=0755
-
