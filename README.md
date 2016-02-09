@@ -12,16 +12,6 @@ cd vagrant-elasticsearch
 vagrant box add hashicorp/precise64
 vagrant up
 vagrant ssh
-
-# launch ES and Kibana (deliberately not launched on startup, for educational reasons :) )
-sudo service elasticsearch start
-sudo service kibana start
-exit
-
-# test ES
-curl http://localhost:9200
-# test kibana
-curl http://localhost:5601
 ```
 
 ## Usage with Atlas
@@ -47,15 +37,34 @@ vagrant up
 vagrant ssh
 ```
 
-The elasticsearch and kibana services should be manually started as well.
-
 You may want to adjust the CPU / memory parameters.
+
+## Starting services
+
+```
+# launch ES and Kibana (deliberately not launched on startup, for educational reasons :) )
+sudo service elasticsearch start
+sudo service kibana start
+exit
+
+# test ES
+curl http://localhost:9200
+# test kibana
+curl http://localhost:5601
+
+# as an option, you can also launch logstash and beats
+~/scripts/setup-dashboards.sh
+sudo service logstash start
+sudo service topbeat start
+sudo service packetbeat start
+
+```
 
 ## Tools
 
 [es2unix](https://github.com/elastic/es2unix) is available in the path.   
 The [marvel](https://www.elastic.co/products/marvel), [bigdesk](http://bigdesk.org/) and [head](http://mobz.github.io/elasticsearch-head/) plugins are installed.   
-VM provisioning is made with Ansible, with significant portions of code borrowed from [Traackr/ansible-elasticsearch](https://github.com/Traackr/ansible-elasticsearch).   
+VM provisioning is made with Ansible.
 
 ## Datasets
 
