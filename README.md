@@ -62,8 +62,8 @@ sudo service packetbeat start
 
 ## Tools
 
-[es2unix](https://github.com/elastic/es2unix) is available in the path.   
-The [marvel](https://www.elastic.co/products/marvel), [bigdesk](http://bigdesk.org/) and [head](http://mobz.github.io/elasticsearch-head/) plugins are installed.   
+[curator](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/index.html), [es2unix](https://github.com/elastic/es2unix) and [jq](https://stedolan.github.io/jq/) are available in the path.   
+The [kopf](https://github.com/lmenezes/elasticsearch-kopf) and [head](http://mobz.github.io/elasticsearch-head/) plugins are installed.   
 VM provisioning is made with Ansible.
 
 ## Datasets

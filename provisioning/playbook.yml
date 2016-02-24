@@ -117,6 +117,9 @@
     - name: Install es2unix
       get_url: url=http://download.elasticsearch.org/es2unix/es dest=/usr/bin/es mode=0755
 
+    - name: Install curator
+      apt: package=python-elasticsearch-curator state=present
+
     - name: queries folder
       file: path=~{{user}}/scripts/queries state=directory owner={{user}} group={{user}} mode=0777
 

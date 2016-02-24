@@ -9,12 +9,11 @@ elasticsearch_apt_repos:
   - 'deb http://packages.elastic.co/elasticsearch/2.x/debian stable main' 
   - 'deb http://packages.elastic.co/logstash/2.2/debian stable main'
   - 'deb https://packages.elastic.co/beats/apt stable main'
+  - 'deb http://packages.elastic.co/curator/3/debian stable main'
 elasticsearch_home_dir: /usr/share/elasticsearch
 elasticsearch_plugin_dir: /usr/share/elasticsearch/plugins
 elasticsearch_plugins:
   - { name: 'mobz/elasticsearch-head' }
-  #- { name: 'elasticsearch/marvel/latest' }
-  #- { name: 'org.carrot2/elasticsearch-carrot2/2.1.1' }
   - { name: 'lmenezes/elasticsearch-kopf/2.0' }
 
 kibana_version: 4.0.2
