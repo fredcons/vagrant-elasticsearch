@@ -2,6 +2,11 @@
 
 A simple Vagrant VM exposing Elasticearch and Kibana, based on the precise64 Vagrant base box. 
 
+## Prerequisites
+
+- [VirtualBox](https://www.virtualbox.org/wiki/Downloads) (5.0.x)
+- [Vagrant](https://www.vagrantup.com/downloads.html) (1.6+)
+ 
 ## Usage with the source code
 
 To launch the VM, use : 
