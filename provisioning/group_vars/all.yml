@@ -16,8 +16,6 @@ elasticsearch_plugins:
   - { name: 'mobz/elasticsearch-head' }
   - { name: 'lmenezes/elasticsearch-kopf/2.0' }
 
-kibana_version: 4.0.2
-kibana_log: /var/log/kibana.log
 kibana_home_dir: /opt/kibana
 kibana_plugins:
   - { name: 'elastic/sense' }
