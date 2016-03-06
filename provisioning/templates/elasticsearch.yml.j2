@@ -92,3 +92,10 @@ network.host: 0.0.0.0
 # Require explicit names when deleting indices:
 #
 # action.destructive_requires_name: true
+
+index.indexing.slowlog.threshold.index.debug: 10ms
+index.indexing.slowlog.level: debug
+
+index.search.slowlog.threshold.query.debug: 10ms
+index.search.slowlog.threshold.fetch.debug: 10ms
+index.search.slowlog.level: debug
