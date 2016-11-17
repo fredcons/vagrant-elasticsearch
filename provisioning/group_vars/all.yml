@@ -1,4 +1,4 @@
-elasticsearch_version: "2.2.0"
+elasticsearch_version: "2.4.1"
 elasticsearch_group: "elasticsearch"
 elasticsearch_user: "elasticsearch"
 elasticsearch_download_url:  "https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch"

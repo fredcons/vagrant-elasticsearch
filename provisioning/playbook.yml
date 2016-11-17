@@ -37,7 +37,7 @@
       apt: pkg={{elasticsearch_apt_java_package}} state=present
 
     - name:  Install elasticsearch
-      apt: pkg=elasticsearch=2.2.0 state=present
+      apt: pkg=elasticsearch={{ elasticsearch_version }} state=present
 
     - name: Installing ES Plugins by Name
       action: shell bin/plugin install {{ item.name }} chdir={{ elasticsearch_home_dir }}
